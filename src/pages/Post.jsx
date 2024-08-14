@@ -6,6 +6,7 @@ import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 import ConformPopUp from "../components/popUp/ConformPopUp";
 import PreviewLoader from "../components/Loader/PreviewLoader";
+import avatarsImg from "../../public/s-7.jpg";
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -39,13 +40,17 @@ export default function Post() {
   };
 
   const handelPopUp = () => {
-    setIsPopUp(!isPopUp)
-  }
+    setIsPopUp(!isPopUp);
+  };
 
   return post ? (
-    <div className="md:p-5 p-3 ">
-      {isPopUp ? <ConformPopUp deletePost={deletePost}  handelPopUp={handelPopUp} /> : null}
-      <div className="flex justify-end items-center pb-3 ">
+    <div className="md:p-5 p-3">
+      {isPopUp ? <ConformPopUp deletePost={deletePost} handelPopUp={handelPopUp} /> : null}
+      <div className="flex justify-between items-center pb-3">
+        <div className="flex items-center gap-5">
+          <img className='w-[2rem] rounded-full' src={avatarsImg} alt="" />
+          {post.UserName}
+        </div>
         {isAuthor && (
           <div className="">
             <Link to={`/edit-post/${post.$id}`}>
@@ -64,18 +69,16 @@ export default function Post() {
         )}
       </div>
       <Container
-        className={
-          "flex xl:flex-row md:flex-col flex-col gap-5 justify-center overflow-x-auto overflow-auto"
-        }
+        className="flex xl:flex-row md:flex-col flex-col gap-5  overflow-x-auto overflow-auto h-[80vh] md:h-[60vh] xl:h-[50vh]"
       >
-        <div className="md:w-full w-full flex justify-center mb-4 relative  rounded-xl p-2 min-h-[10rem]">
+        <div className="relative w-full aspect-w-4 aspect-h-5 rounded-xl overflow-hidden mb-4">
           <img
             src={appwriteService.getFilePreview(post.featuredImage)}
             alt={post.title}
-            className="rounded-xl w-[100%] border"
+            className="object-cover w-full h-full"
           />
         </div>
-        <div className="md:w-full w-full  border-none bg-primaryLight-4 dark:bg-primaryDark-4 bg-opacity-50 dark:bg-opacity-10 text-white dark:text-white p-5 rounded-[1.75rem] ">
+        <div className="md:w-full w-full border-none bg-primaryLight-4 dark:bg-primaryDark-4 bg-opacity-50 dark:bg-opacity-10 text-white dark:text-white p-5 rounded-[1.75rem]">
           <div className="w-full mb-3 pb-3 border-b-2">
             <h1 className="text-2xl font-bold">{post.title}</h1>
           </div>
@@ -83,5 +86,5 @@ export default function Post() {
         </div>
       </Container>
     </div>
-  ) : <PreviewLoader/> ;
+  ) : <PreviewLoader />;
 }

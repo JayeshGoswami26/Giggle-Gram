@@ -143,8 +143,7 @@ function Home() {
                         alt=""
                       />
                       <p className="">
-                        A cartoon skull with exaggerated, wide eyes and a big,
-                        goofy grin is sporting a tiny party hat and glasses
+                      A sleek, futuristic steel figure with glassy, embodying a blend of strength and sophistication?
                       </p>
                     </div>
                   </div>

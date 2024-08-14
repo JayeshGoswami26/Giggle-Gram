@@ -1,15 +1,22 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, RTE, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ErrorPopUp from "../popUp/ErrorPopUp";
+import authService from "../../appwrite/auth";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "./utils/cropImage"; // Utility function to crop the image
 
 function UploadPost({ post }) {
   const [isStatus, setIsStatus] = useState();
-  // const [isError, setISError] = useState(false);
+  const [userName, setUserName] = useState("");
   const [image, setImage] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  // const [aspect, setAspect] = useState(16 / 9); // State for aspect ratio
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -22,12 +29,30 @@ function UploadPost({ post }) {
     }
   };
 
+  // const toggleAspect = () => {
+  //   setAspect((prevAspect) => (prevAspect === 16 / 9 ? 9 / 16 : 16 / 9));
+  // };
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      setCroppedImage(croppedImage);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [croppedAreaPixels]);
+
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
         title: post?.title || "",
         slug: post?.$id || "",
         content: post?.content || "",
+        UserName: post?.userName || "",
         status: post?.status || true,
       },
     });
@@ -36,7 +61,6 @@ function UploadPost({ post }) {
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
-
     if (data.status === "active") {
       setIsStatus(true);
     } else {
@@ -44,7 +68,7 @@ function UploadPost({ post }) {
     }
 
     if (post) {
-      const file = data.image[0]
+      const file = croppedImage
         ? await appwriteService.uploadFile(data.image[0])
         : null;
 
@@ -68,10 +92,12 @@ function UploadPost({ post }) {
         data.featuredImage = fileId;
         const userID = userData.$id;
         const status = isStatus;
+        const UserName = userName;
         const dbPost = await appwriteService.createPost({
           ...data,
           status,
           userID,
+          UserName,
         });
         console.log(isStatus);
 
@@ -93,7 +119,7 @@ function UploadPost({ post }) {
     return "";
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
         setValue("slug", slugTransform(value.title), { shouldValidate: true });
@@ -103,10 +129,12 @@ function UploadPost({ post }) {
     return () => subscription.unsubscribe();
   }, [watch, slugTransform, setValue]);
 
-  // const handelError = () => {
-
-  //   setISError(!isError)
-  // }
+  useEffect(() => {
+    authService.getCurrentUser().then((user) => {
+      setUserName(user.name);
+      console.log(userName);
+    });
+  });
 
   return (
     <>
@@ -117,18 +145,36 @@ function UploadPost({ post }) {
             className="flex flex-col justify-center items-center gap-5"
           >
             <div className="w-full px-2">
-                
               <div className="min-h-[40vh] w-full bg-primaryLight-2 dark:bg-primaryDark-3 p-5 rounded-[1rem] mb-10 ">
-                {image && (
+                {croppedImage ? (
                   <div className="flex justify-center items-center">
                     <img
-                      src={image}
+                      src={croppedImage}
                       className="mt-0 rounded-[1rem] w-[30rem] xl:w-1/2 "
-                      alt="Preview"
+                      alt="Cropped Preview"
                     />
                   </div>
-                )}
-                {post && (
+                ) : image ? (
+                  <>
+                    <div className="crop-container">
+                      <Cropper
+                        image={image}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={4/5 } // Updated aspect prop
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
+                    <div className="flex md:flex-row flex-col justify-center items-center gap-5 text-center mt-5">
+                      <Button className="bg-primaryLight-4 dark:bg-primaryDark-1" onClick={showCroppedImage}>Crop Image</Button>
+                      {/* <Button className="bg-primaryLight-4 dark:bg-primaryDark-1" onClick={toggleAspect} >
+                        Change Aspect Ratio
+                      </Button> */}
+                    </div>
+                  </>
+                ) : post ? (
                   <div className="w-full flex justify-center items-center">
                     <img
                       src={appwriteService.getFilePreview(post.featuredImage)}
@@ -136,13 +182,14 @@ function UploadPost({ post }) {
                       className="mt-0 rounded-[1rem] w-[30rem] xl:w-1/2 "
                     />
                   </div>
-                )}
+                ) : null}
+
                 <Input
                   label=""
                   type="file"
                   id="Postinput"
                   className=" bg-primaryLight-2 dark:bg-primaryDark-3 outline-none border-none hidden "
-                  onInput={(e)=> handleImageChange(e)}
+                  onInput={(e) => handleImageChange(e)}
                   accept="image/png, image/jpg, image/jpeg, image/gif"
                   {...register("image", { required: !post })}
                 />
@@ -155,32 +202,28 @@ function UploadPost({ post }) {
                   </label>
                 </div>
               </div>
-
-            
-              
             </div>
             <div className="w-full px-2">
               <div className="flex gap-5 md:flex-row flex-col">
-             
-              <Input
-                    label="Title :"
-                    placeholder="Title"
-                    labelClassName='border-none hidden'
-                    className="outline-none border-none bg-white"
-                    {...register("title", { required: true })}
+                <Input
+                  label="Title :"
+                  placeholder="Title"
+                  labelClassName="border-none hidden"
+                  className="outline-none border-none bg-white"
+                  {...register("title", { required: true })}
                 />
-              <Input
-                label="Slug :"
-                placeholder="Slug :"
-                labelClassName='border-none hidden'
-                className="outline-none border-none bg-white"
-                {...register("slug", { required: true })}
-                onInput={(e) => {
-                  setValue("slug", slugTransform(e.currentTarget.value), {
-                    shouldValidate: true,
-                  });
-                }}
-              />
+                <Input
+                  label="Slug :"
+                  placeholder="Slug :"
+                  labelClassName="border-none hidden"
+                  className="outline-none border-none bg-white"
+                  {...register("slug", { required: true })}
+                  onInput={(e) => {
+                    setValue("slug", slugTransform(e.currentTarget.value), {
+                      shouldValidate: true,
+                    });
+                  }}
+                />
               </div>
               <RTE
                 label="Content :"
@@ -190,30 +233,23 @@ function UploadPost({ post }) {
               />
             </div>
             <div className="flex justify-center items-center gap-5 mb-10">
-            <Select
+              <Select
                 options={["active", "inactive"]}
                 label="Status"
                 className="bg-primaryLight-2 dark:bg-primaryDark-3"
                 {...register("status", { required: true })}
               />
-               <Button
+              <Button
                 type="submit"
                 bgColor={post ? "bg-green-500" : undefined}
                 className=""
-                // handelOnClick={handelError}
               >
                 {post ? "Update" : "Submit"}
               </Button>
-
             </div>
-           
           </form>
         </div>
       </div>
-      {/* {isError ? 
-      <ErrorPopUp ErrorHeading={'Error !'} ErrorSubHeading={'Please fill in all required fields.'} Okay={handelError}  />
-    : null  
-    } */}
     </>
   );
 }

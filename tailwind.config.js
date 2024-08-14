@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      aspectRatio: {
+       '4/5': '4 / 5',
+      },
       colors: {
         primaryLight: {
           1: '#def9c4',
@@ -23,6 +26,8 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    
+  ],
 }
 
