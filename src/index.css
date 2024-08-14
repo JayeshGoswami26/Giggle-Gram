@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&family=Roboto+Mono&display=swap');
+
+/* 
+  main paddings is used as 3rem
+  inner secondary paddings are used as 1.75rem
+*/
+
+body {
+  /* Light Colors Variables */
+  --primaryColorLight: #def9c4;
+  --primaryColorLight2: #9cdba6;
+  --primaryColorLight3: #50b498;
+  --primaryColorLight4: #468585;
+
+  /* Dark Colors Variables */
+  --primaryColorDark: #003c43;
+  --primaryColorDark2: #135d66;
+  --primaryColorDark3: #77b0aa;
+  --primaryColorDark4: #e3fef7;
+
+  /* Padding */
+  --outerPadding : 3rem;
+  --innerPadding : 1.75rem;
+  --childrenPadding : 1rem;
+}
+
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: var(--primaryColorDark);
+  border-radius: 3rem;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: var(--primaryColorDark);
+  border-radius: 3rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 3rem;
+  background-color: var(--primaryColorDark2);
+}
+
+
+.mainScreen {
+  background-image: linear-gradient(
+    /* 45deg,
+    hsl(238deg 89% 74%) 16%,
+    hsl(239deg 74% 68%) 45%,
+    hsl(240deg 64% 62%) 49%,
+    hsl(241deg 56% 56%) 50%,
+    hsl(241deg 52% 50%) 50%,
+    hsl(241deg 61% 43%) 50%,
+    hsl(242deg 54% 47%) 50%,
+    hsl(242deg 50% 51%) 53%,
+    hsl(242deg 52% 55%) 59%,
+    hsl(242deg 55% 59%) 71%,
+    hsl(242deg 59% 63%) 100% */
+      45deg,
+    hsl(91deg 82% 87%) 10%,
+    hsl(94deg 74% 86%) 41%,
+    hsl(98deg 68% 84%) 47%,
+    hsl(102deg 63% 83%) 49%,
+    hsl(106deg 58% 82%) 49%,
+    hsl(110deg 55% 80%) 49%,
+    hsl(115deg 51% 79%) 49%,
+    hsl(120deg 48% 78%) 51%,
+    hsl(125deg 47% 76%) 57%,
+    hsl(130deg 47% 74%) 87%
+  );
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+
+.mainScreenLight {
+  background-image: linear-gradient(
+    45deg,
+    hsl(91deg 82% 87%) 10%,
+    hsl(94deg 74% 86%) 41%,
+    hsl(98deg 68% 84%) 47%,
+    hsl(102deg 63% 83%) 49%,
+    hsl(106deg 58% 82%) 49%,
+    hsl(110deg 55% 80%) 49%,
+    hsl(115deg 51% 79%) 49%,
+    hsl(120deg 48% 78%) 51%,
+    hsl(125deg 47% 76%) 57%,
+    hsl(130deg 47% 74%) 87%
+  );
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+.mainScreenDark {
+  background-image: linear-gradient(
+    45deg,
+    hsl(187deg 69% 24%) 0%,
+    hsl(186deg 71% 22%) 41%,
+    hsl(186deg 74% 21%) 49%,
+    hsl(186deg 77% 20%) 52%,
+    hsl(186deg 80% 19%) 53%,
+    hsl(186deg 84% 17%) 53%,
+    hsl(186deg 88% 16%) 53%,
+    hsl(186deg 92% 15%) 56%,
+    hsl(186deg 96% 14%) 63%,
+    hsl(186deg 100% 13%) 100%
+  );
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+button{
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background-color: var(--primaryColorDark);
+  color: var(--primaryColorDark4);
+  transition: all ease-in-out 0.2s ;
+}
+button:hover{
+  scale: 1.05;
+}
+.svgBox {
+  background-image: linear-gradient(
+    45deg,
+    hsl(238deg 89% 74%) 16%,
+    hsl(239deg 74% 68%) 45%,
+    hsl(240deg 64% 62%) 49%,
+    hsl(241deg 56% 56%) 50%,
+    hsl(241deg 52% 50%) 50%,
+    hsl(241deg 61% 43%) 50%,
+    hsl(242deg 54% 47%) 50%,
+    hsl(242deg 50% 51%) 53%,
+    hsl(242deg 52% 55%) 59%,
+    hsl(242deg 55% 59%) 71%,
+    hsl(242deg 59% 63%) 100%
+  );
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+

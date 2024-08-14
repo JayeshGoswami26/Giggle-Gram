@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&family=Roboto+Mono&display=swap');
+
+
+.butterflyHero {
+  background-image: url(../public/LMkz.gif);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: changeShape 10s infinite alternate;
+  padding: 10rem;
+  opacity: 1;
+  z-index: 0;
+  position: relative;
+}
+
+@keyframes changeShape {
+  0% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  25% {
+    border-radius: 61% 39% 24% 76% / 30% 30% 70% 70%;
+  }
+  50% {
+    border-radius: 73% 27% 85% 15% / 68% 83% 17% 32%;
+  }
+  75% {
+    border-radius: 73% 27% 25% 75% / 19% 83% 17% 81%;
+  }
+  100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+}
+
+#userName {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.MainLoader{
+  
+}
