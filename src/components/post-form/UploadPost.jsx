@@ -28,11 +28,6 @@ function UploadPost({ post }) {
       reader.readAsDataURL(file);
     }
   };
-
-  // const toggleAspect = () => {
-  //   setAspect((prevAspect) => (prevAspect === 16 / 9 ? 9 / 16 : 16 / 9));
-  // };
-
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -71,7 +66,6 @@ function UploadPost({ post }) {
       const file = croppedImage
         ? await appwriteService.uploadFile(data.image[0])
         : null;
-
       if (file) {
         appwriteService.deleteFile(post.featuredImage);
       }
@@ -150,7 +144,7 @@ function UploadPost({ post }) {
                   <div className="flex justify-center items-center">
                     <img
                       src={croppedImage}
-                      className="mt-0 rounded-[1rem] w-[30rem] xl:w-1/2 "
+                      className="mt-0 rounded-[1rem] w-[30rem] h-[30rem] object-contain xl:w-1/2 "
                       alt="Cropped Preview"
                     />
                   </div>
@@ -161,7 +155,7 @@ function UploadPost({ post }) {
                         image={image}
                         crop={crop}
                         zoom={zoom}
-                        aspect={4/5 } // Updated aspect prop
+                        aspect={1/1} // Updated aspect prop
                         onCropChange={setCrop}
                         onZoomChange={setZoom}
                         onCropComplete={onCropComplete}
@@ -198,7 +192,7 @@ function UploadPost({ post }) {
                     htmlFor="Postinput"
                     className="cursor-pointer text-center"
                   >
-                    Select Image
+                    Select Image 
                   </label>
                 </div>
               </div>

@@ -111,12 +111,13 @@ function App() {
         <div
           className={` w-full xl:w-[20%] xl:h-[100%] rounded-[1.75rem] md:bg-transparent bg-white dark:bg-black flex items-center justify-between p-3 md:p-0  xl:block `}
         >
-          <div className="flex xl:flex-col gap-5 xl:gap-0 justify-center items-center pb-3">
+          <div className="flex xl:flex-col gap-5 xl:gap-0 justify-center items-center pb-3 relative">
             <img
               className="w-[3rem] sm:w-[4rem] xl:w-[8rem] rounded-full "
               src={avatarsImg}
               alt=""
             />
+          
             <span
               className="font-normal sm:text-2xl text-lg text-primaryLight-4 dark:text-primaryDark-4"
               id="userName"
