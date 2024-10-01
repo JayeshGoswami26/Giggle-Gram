@@ -124,6 +124,36 @@ body {
   }
 }
 
+.skeleton-gradient{
+  background-image: linear-gradient(
+    45deg,
+  hsl(0deg 0% 86%) 13%,
+  hsl(344deg 0% 87%) 34%,
+  hsl(344deg 0% 87%) 41%,
+  hsl(344deg 0% 88%) 45%,
+  hsl(344deg 0% 89%) 48%,
+  hsl(344deg 0% 89%) 49%,
+  hsl(344deg 0% 90%) 50%,
+  hsl(344deg 0% 91%) 50%,
+  hsl(344deg 0% 91%) 50%,
+  hsl(344deg 0% 92%) 50%,
+  hsl(344deg 0% 93%) 50%,
+  hsl(344deg 0% 93%) 50%,
+  hsl(344deg 0% 94%) 50%,
+  hsl(344deg 0% 95%) 50%,
+  hsl(344deg 0% 95%) 50%,
+  hsl(344deg 0% 96%) 50%,
+  hsl(344deg 0% 97%) 51%,
+  hsl(344deg 0% 97%) 52%,
+  hsl(344deg 0% 98%) 55%,
+  hsl(344deg 0% 99%) 59%,
+  hsl(344deg 0% 99%) 66%,
+  hsl(0deg 0% 100%) 87%
+  );
+  background-size: 170% 170%;
+  animation: gradient-animation 2s ease infinite;
+}
+
 button{
   padding: 1rem 2rem;
   border-radius: 1rem;
