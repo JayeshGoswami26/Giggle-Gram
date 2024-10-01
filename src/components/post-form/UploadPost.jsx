@@ -26,6 +26,7 @@ function UploadPost({ post }) {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+      console.log(reader.readAsDataURL(file))
     }
   };
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -126,7 +127,6 @@ function UploadPost({ post }) {
   useEffect(() => {
     authService.getCurrentUser().then((user) => {
       setUserName(user.name);
-      console.log(userName);
     });
   });
 
